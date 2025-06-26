@@ -16,47 +16,54 @@
 # executar com streamlit run painelsolar.py --server.port 8501 --server.address
 
 
-#import psycopg2 as pg
 import streamlit as st
 import pandas as pd
-import sqlite3
-import requests
-import time
-#from sqlalchemy import create_engine
-#from sqlalchemy import text
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 import plotly.express as px
-import plotly.graph_objects as go #plotly.graph_objects é usado para criar gráficos mais complexos, como 2 colunas
+import plotly.graph_objects as go
 
-# Baixar o arquivo .db do Google Drive (substitua pelo seu ID)
-FILE_ID = "1QnRvLKTc1sZyqxVODPehOF55sYPyhZHz"  # <-- coloque o ID do seu arquivo aqui
-DOWNLOAD_URL = f"https://drive.google.com/uc?export=download&id={FILE_ID}"
+# Configuração do acesso ao Google Sheets
+scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_name("painelsolardoroberto-b91100c3eb75.json", scope)
+client = gspread.authorize(creds)
 
-# Baixar o arquivo do Google Drive
-@st.cache_data(ttl=60)  # cache para evitar downloads repetidos em pouco tempo
-def baixar_db():
-    r = requests.get(DOWNLOAD_URL)
-    with open("painelsolar.db", "wb") as f:
-        f.write(r.content)
-    return "painelsolar.db"
+# Nome da planilha e da aba
+SHEET_NAME = "painelsolardoroberto"  # Nome da sua planilha
+WORKSHEET_NAME = "dados"             # Nome da aba (worksheet), ajuste conforme necessário
 
-db_path = baixar_db()
-# Conecte ao banco SQLite
-conn = sqlite3.connect(db_path)
+@st.cache_data(ttl=60)
+def carregar_dados():
+    sheet = client.open(SHEET_NAME).worksheet(WORKSHEET_NAME)
+    data = sheet.get_all_records()
+    df = pd.DataFrame(data)
+    return df
 
-# consulta SQL 
-# consulta SQL adaptada para SQLite
-sql = (
-    "SELECT substr(measure_time, 12, 5) as hora, voltagem, item "
-    "FROM dados "
-    "WHERE sensor_name = 'voltagem' "
-    "AND measure_time >= datetime('now', '-480 minutes') "
-    "ORDER BY item ASC, measure_time DESC "
-    "LIMIT 1000"
-)
+df = carregar_dados()
 
-df = pd.read_sql_query(sql, conn)
-conn.close()
+# Converte 'data' para datetime
+df['data'] = pd.to_datetime(df['data'], errors='coerce')
+df['data'] = df['data'].dt.tz_localize(None)  # <-- Remove o timezone
+df['voltagem'] = pd.to_numeric(df['voltagem'], errors='coerce')
+df = df.dropna(subset=['data', 'voltagem'])
+df['voltagem'] = df['voltagem'].astype(float)
 
+# Filtra últimas 8 horas (480 minutos)
+limite_tempo = pd.Timestamp.now() - pd.Timedelta(minutes=480)
+# Filtra últimas 8 horas (480 minutos) e apenas 'nome' == 'voltagem'
+df = df[(df['data'] >= limite_tempo) & (df['nome'] == 'voltagem')]
+
+# Ordena por item ASC e data DESC
+df = df.sort_values(by=['item', 'data'], ascending=[True, False])
+
+# Limita a 1000 linhas
+df = df.head(1000)
+
+# Cria coluna 'hora' igual ao SQL
+df['hora'] = df['data'].dt.strftime('%H:%M')
+
+# Exibe o DataFrame no console para depuração
+print("Dados carregados do Google Sheets:") 
 print(df)
 
 # Configurações do Streamlit
@@ -218,12 +225,11 @@ with col_donut:
     st.plotly_chart(fig_donut, use_container_width=True)
 
 with col_df:
-    df.drop(columns=['voltagem_arred'], inplace=True)
-    df = df.replace("None", "")
-    df_exibe = df.head(5) # Limita o DataFrame a 5 linhas para exibição
+    # Cria um DataFrame só com as colunas desejadas e renomeia para exibição
+    df_exibe = df[['hora', 'voltagem']].copy()
     df_exibe = df_exibe.rename(columns={'hora': 'Hora', 'voltagem': 'Tensão (V)'})
-    df_exibe = df_exibe.iloc[:, :2] #df_exibe = df_exibe[['Hora', 'Tensão (V)']]
-    #df = df.iloc[::-1] # Exemplo de: Inverte para ordem cronológica (mais antigo primeiro)
+    df_exibe = df_exibe.head(5)  # Limita a 5 linhas para exibição
+
     st.dataframe(
         df_exibe,
         height=220,
@@ -259,5 +265,9 @@ with col_chart_min:
 
 # Atualiza a cada 30 segundos
 #st.write("A página será atualizada automaticamente a cada 30 segundos.")
-time.sleep(30)
-st.rerun()
+st.markdown(
+    """
+    <meta http-equiv="refresh" content="30">
+    """,
+    unsafe_allow_html=True
+)
