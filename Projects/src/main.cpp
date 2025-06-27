@@ -11,7 +11,7 @@
 // Substitua pelos dados do seu arquivo JSON da conta de serviço
 #define CLIENT_EMAIL "esp32painelsolardoroberto@painelsolardoroberto.iam.gserviceaccount.com"
 #define PROJECT_ID "painelsolardoroberto"
-#define PRIVATE_KEY "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDh8pw+5NTLTlsO\nWO+PCiXjoEHMsN+Y4tD/50mbWjZ0Jjs/w8DYR/vJ/D3EZwD3DyM69xHZch/7bdSL\nGOvqBwirfyjACSfC6e7ofitlO4GOMo47M8FQ2HZY2wXPWHxFheF4YFH1v+18Vic4\n/A+TvlL3Mc451BV0S7AleFDXnZKA/V3+M4Xe2onUwh5gwlk56OGKjaNSG7me0SLx\nCJmEjqEqnszA6uBrLw4hiZntdty+CHGnh8yea01/e8rP6ZBpjQklWzhynI+aSpjg\n/PCMHnjQnjbivoekUlGgodC0/zPoJvR6F6UXCe5GY3Wg3aXKvMIIa06cKccwEtx6\nEI1cTJfPAgMBAAECggEAG39IA+DGA3v6BDP563bOXPZQK6tMJYdXl10RYyZGbDo0\nNF1hUbDo8+WOVXbnnNQrHcObA33VEJHcL5VigyzvTC0By4+8VrHbe6XR0tRmvuRo\n1MxGoXfGZ1KNpsnboyZY5dUVrwpNdOKTNrx433+7tGOg96lXdxC4U3G3UkDV5yaJ\nPtP+XboBo1O+pDVy6tZ+GW+nuGSjdbw5tjwwk2W2jvgl3g3XMQ5flCBIOViaP6nk\nuE4Pn6RvRI1H1hoz9ZUqtbllaN7Zc/NtRFUry6ojfqHp2UGzxdOQI0+N6g83HKif\nZd5MYwugad9J8GBHn3f8BNvKSPisnSnStYmR/Ktc+QKBgQD5hPhYWmPXUDQwRrqs\nhBbnDGp5s9wVQu3jAwLLRNHOgZ9AuNBnK+ZtxTV1Ri9q7lp1jBy88jWoFCL1g6jk\nzXgyKlmVhkjuDVLlgdyw6QbZVslYpT1XshIzqxXXH0nF6FDaGlKlMU4Qi9OPm5/+\noTKtG+MNWSux2s9cZ2OrRG+N3QKBgQDn0OoKGfDp1Svfcfw7r24q5fLvq3Cd9aJ+\nlIxgLZUb3RdmmW3w45r9bYFg/4rc06/w7kZKUxgOFxK4McVT78GBQw0tM66eEbH0\ny1WctD7G5i4Vhz9Psf2tE2sL1t+ZuGq8EPKPMQuPfaZ9mKMHLKIjqWwXCiCk9udt\nTkAQ6nzPmwKBgQDBY2e/wr7jIExypj8EepPtm1fi353R9L+/VJQTy1D5RsmRNix/\n6ix8I37dV/pkXDxMIr4bS3Z+wKyfsN10CDQCXYR1OVDJABahvta3XsRqKrN/OwKi\nN2eYGB+jTaK1+uq/P+uSEPa6KEVeZnXIulM2jAicTeJpxHc23QMIuM/lGQKBgQDk\nqwDiW/p4Pq5baK3+FivfJxs/7eZV+sKCiHf8O5qVdL8rlveLIol1qfpwu0K4WBx6\n1iACGvtkksAFcBsNlDhWENVDnHKIPD5FkfnubSJrwwz8cYAzVgk9HCWA9UF1+iNX\nRoRuWVvk/HYp+FIAtrdt5Cbah0PyVheti/3IcfYSNwKBgQDw1V+yVnJfrjdWOffY\nAZPqm8sDEPLaLohlyI0II3Y/MiBPsFv3mkIBzqG47H1IFZ4gbJBQY2he0bXUYYgt\nWvQapjDNW1edwUgrc9EBgiBNso2PGPpZWmnxUVm9eTDgTTAZ8kcpXUvy2DtT/O7l\n1JBAnBmkD4k432wmioVrAN5LPA==\n-----END PRIVATE KEY-----\n"
+#define PRIVATE_KEY "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC4bIoiB4itb1yu\nwMyh8qMF+vTJ5UsOcLobYZ96UC0VEd1MY8msuxAlXY5qbEEFo9q3goQqR1XbnPJQ\nfJVL80zimNW/veUNtDSS802fMHJbhdg35adFSIm2BeMQujMchJSSTnozVkF1UjGP\n5464mmAJMsachyqUjw+QMmYuiWu0bPgPGmnUhpFSu5ly9GXXBpzeDvNU/8b7DSBT\ncd1Q1tdobB26bQkTUCREZjPvIzOqfUhod3uhq78Gd7wnCh0hjBgK+84/D6X7Iyhc\nnh8ggynEp2Jwb2LDB1AbrcnkG6BAOTK4Nq8J1Aa0gM7tTh2wLVyIP5mwFrKhYWoA\n130gE80rAgMBAAECggEAUyetiPZ4rCrgUXNhUUxEMXgcU8RteU9euuXjsJTiHvP1\nInKEBrw55X8vrdCt6Mse3UueKCoODn3PzHbAIoTLkAh1qIUI+Iregbvure58QcQx\n39JO/7BbV5WD8pDiZuNo0idMdkVYMnwjGM3Bzn7c+ojIgN95VY7D57Kx3B3eUHVl\noEI02IRd5DtogV5JYogNc5ARoF9irADmWxeN8HVZaNAT9uCVlPbA9IohLl4kAmRS\n4HquKqkkMLFC0cblfMJyl9BXBRug1z0YXUBQdIaFZqTLL/0R5fUq8Ghf+JS/n5TH\nJqPFOenADJigyqW6xIvg105YXU0QpGOp5kmpMvpisQKBgQDj8i22yWfDoZGLIgs1\nZCeeuJsN6xGOXsQqishBRfJ06u84h+ER6bWKVhSTHi5LJ6HFkPRkDaeFO5jnly1V\nXRKZFQvUa58L9v76CJ9qpdOeyiu3UnYB3yJvwbmHRAyc96RiDm+4fQRlXuEFi8vw\nigN5MamDUeitCoHMdxv6WXtXPQKBgQDPHyBkbTIMvPywRy8PjklcVjstDikJKIep\nbP0Lm7JHBrONy0IiDLe162GbDzv2EsBvnqZuxWuocPwmrk7Cx8jXAxSHGB3ikoOn\nXlVA9KxxK0pS5pigvz03fYgR5QeLFhaVsEi0oA1qxSY+//kGOzFGQz1ThDL+u5X5\nmC/Gy1i8hwKBgAwn8yYnUYBOUnuwAhcD01UUlThFy/biuOVn50wL1eVETiOeo3MY\nGpVZB9ncpy1c3LSziUT4sXFaf0oCdulxgDdntuzKHH4/2tMsuIuwcjuqnnA1VpO8\n+ZIqK6G6EE4iqsKL8ItPJ3fcenWYQfT+9zZ0XozhRl5MDCYCSByuvvQlAoGAfGyM\nfwgCCxj1C8iXgtbNR0UeI4DgMfpBFQy+Lt0HiheCgena/q15JzYR2p6aPMcjB2rd\nPKoodHX7ZBlOg0CVbGUTTdy1B0lRAZhvyqexeAKzkX2prtdzpQQqW+WkVG+efan6\n41dK+BsbULlhFdc1UKpQCv3dzJ1QCTLdcKTz170CgYEAko8uI/ksNXRyxtYPlXwn\nLHhbzcWtKxtjRevUI40Nen3GgYzj1Nf06nN4L8iYF4fhLo6OuZDIIjIcNythN6bV\nNX9eKJ8dQ21SyAE5KzGtkXtO20ZbLrRoZHFU9U6LVaKT3Xh7RyZktUWE4BPZpe/K\ndH3iBsYDVcTMhUsVtiXqQpM=\n-----END PRIVATE KEY-----\n"
 
 // ID da sua planilha (pegue na URL do Google Sheets)
 #define SHEET_ID "1L8qyOAQR0OvTN1L5sn_vzfEANAgseM9iVS9GvDphNT0"
@@ -65,6 +65,29 @@ void checkAndPrintWiFiStatus() {
   long rssi = WiFi.RSSI();
 }
 
+
+void tokenStatusCallback(TokenInfo info) {
+  String msg = "Token status: " + String(info.status);
+  Serial.println(msg);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextFont(2);
+  //tft.setCursor(0, 60, 2); // Ajuste a posição conforme necessário
+  tft.println(msg);
+
+  if (info.status == token_status_error) {
+    String err = "Token error: " + String(GSheet.getTokenError(info).c_str());
+    Serial.println(err);
+    tft.setTextColor(TFT_RED, TFT_BLACK);
+    //tft.setCursor(0, 80, 2); // Linha abaixo do status
+    tft.println(err);
+  }
+  // Pausa de 15 segundos após exibir as mensagens
+  delay(15000);
+}
+
+
+
+
 void setup() {
   tft.init();
   tft.setRotation(1);
@@ -75,6 +98,7 @@ void setup() {
   bipe();
   delay(1000);
 
+  GSheet.setTokenCallback(tokenStatusCallback);
   GSheet.begin(CLIENT_EMAIL, PROJECT_ID, PRIVATE_KEY);
 
   pinMode(BUTTON_1, INPUT_PULLUP);
@@ -109,6 +133,7 @@ void setup() {
   configTime(0, 0, "a.st1.ntp.br");
   setenv("TZ", "GMT+3", 1); // GMT+3 significa UTC-3 (Brasil)
   tzset();
+  GSheet.setSystemTime(time(nullptr));
 }
 
 void loop() {
@@ -202,6 +227,7 @@ void loop() {
       Serial.println("Dados enviados para o Google Sheets!");
       response.toString(Serial, true);
     } else {
+      Serial.print("Erro ao enviar para Google Sheets: ");
       Serial.println(GSheet.errorReason());
     }
 

@@ -7,3 +7,5 @@ src/arduino_secrets.h
 
 .venv/
 *.json
+*.toml
+

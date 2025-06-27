@@ -6,7 +6,7 @@ Consegui vencer o desafio de fazer um DashBoard em Python que atualiza a cada 30
 Mas tive que aprender muita coisa, por exemplo, usar:
 
 01) Esp32 da TT-GO T-Display e porta analógica GPIO34 (vbat) programando em MicroPython e usando a lib TFT-eSPI
-02) Neon Tech PostgreSQL (PG cloud) e me aprofundar em SQL, cloud, PG e timestamp e depois API Service Client Google Sheets com ESP32
+02) Neon Tech PostgreSQL (PG cloud) e me aprofundar em SQL, cloud, PG e timestamp e depois API Service Client Google Sheets com ESP32 para poder gravar gratuitamente indefinidamente sem o limite de 190 horas do PostgreSQL Neon Tech
 03) VS Code c/sweet drácula, git e bash
 04) Python 3.13 
 05) Bibliotecas SQLAlchemy, psycopg2, plotly.express e go, pandas e streamlit
