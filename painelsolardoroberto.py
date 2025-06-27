@@ -25,12 +25,12 @@ import plotly.graph_objects as go
 import json
 
 service_account_info = st.secrets["gcp_service_account"]
-with open("service_account.json", "w") as f:
+with open(r"C:\codigos\.secrets\service_account.json", "w") as f:
     json.dump(dict(service_account_info), f)
 
 # Configuração do acesso ao Google Sheets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("service_account.json", scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name(r"C:\codigos\.secrets\service_account.json", scope)
 client = gspread.authorize(creds)
 
 # Nome da planilha e da aba

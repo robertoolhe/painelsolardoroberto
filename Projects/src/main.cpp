@@ -81,7 +81,7 @@ void tokenStatusCallback(TokenInfo info) {
     //tft.setCursor(0, 80, 2); // Linha abaixo do status
     tft.println(err);
   }
-  // Pausa de 15 segundos após exibir as mensagens
+    #include "../meus_secrets/arduino_secrets.h"// Pausa de 15 segundos após exibir as mensagens
   delay(15000);
 }
 
