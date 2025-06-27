@@ -276,7 +276,7 @@ with col_chart_min:
 #st.write("A página será atualizada automaticamente a cada 30 segundos.")
 st.markdown(
     """
-    <meta http-equiv="refresh" content="30">
+    <meta http-equiv="refresh" content="60">
     """,
     unsafe_allow_html=True
 )
