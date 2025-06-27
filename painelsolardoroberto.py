@@ -30,7 +30,7 @@ with open("service_account.json", "w") as f:
 
 # Configuração do acesso ao Google Sheets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("painelsolardoroberto-b91100c3eb75.json", scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name(r"C:\codigos\github\painelsolardoroberto-b91100c3eb75.json", scope)
 client = gspread.authorize(creds)
 
 # Nome da planilha e da aba
