@@ -131,9 +131,8 @@ df['hora'] = df['hora'].dt.strftime('%H:%M')
 # Crie uma coluna formatada só para exibição
 df['voltagem_fmt'] = df['voltagem'].map(lambda x: f"{x:.2f}")
 
-# Ordene para o gráfico
-df = df.sort_values(by='hora', ascending=True)  # 'hora' é o nome da coluna após o rename
-#st.dataframe(df)
+# Ordene o df para o gráfico (mais antigo para mais recente)
+df_chart = df.sort_values(by='hora', ascending=True)
 
 # Plota o gráfico de linha com o eixo x formatado
 #st.subheader("Últimas 4 horas - Dados coletados a cada 30 segundos")
@@ -146,7 +145,7 @@ col_chart, col_gauge = st.columns([2, 1])  # Ajuste a proporção conforme desej
 with col_chart:
     # Gráfico de linhas
     fig = px.line(
-        df, 
+        df_chart, 
         x='hora', 
         y='voltagem',
         labels={'hora': 'Últimas 8 Horas', 'voltagem': 'Tensão (V)'},
@@ -170,10 +169,10 @@ with col_chart:
     )
 
 with col_gauge:
-    # Gráfico gauge com o último valor de voltagem
-    df = df.rename(columns={'hora': 'hora'})
-    ultimo_valor = df['voltagem'].iloc[-1]
-    ultima_hora = df['hora'].iloc[-1]  # após o rename, a coluna é 'hora'
+    # Ordena por data/hora decrescente para pegar o mais recente
+    df_gauge = df.sort_values(by='data', ascending=False)
+    ultimo_valor = df_gauge['voltagem'].iloc[0]
+    ultima_hora = df_gauge['hora'].iloc[0]
     fig_gauge = go.Figure(go.Indicator(
         mode="gauge+number",
         value=ultimo_valor,
@@ -196,11 +195,7 @@ with col_gauge:
     fig_gauge.update_layout(margin=dict(t=4, b=0, l=0, r=0), height=380)
     st.plotly_chart(fig_gauge, use_container_width=True)
 
-
-
-
 # Cria uma coluna arredondada para a voltagem
-
 df['voltagem_arred'] = df['voltagem'].astype(float).round(2)
 contagem = df['voltagem_arred'].value_counts().sort_values(ascending=False)
 percentual = contagem / contagem.sum()
@@ -234,15 +229,13 @@ with col_donut:
     else:
         st.info("Não há dados suficientes para exibir o gráfico de rosca.")
 
+# Para exibição invertida na tabela:
 with col_df:
-    # Cria um DataFrame só para exibição, ordenado do mais recente para o mais antigo
-    df_exibe = df[['hora', 'voltagem_fmt', 'data']].copy()
-    df_exibe = df_exibe.sort_values(by='data', ascending=False)  # <-- só aqui!
+    df_exibe = df.sort_values(by='data', ascending=False)[['hora', 'voltagem_fmt', 'data']].copy()
     df_exibe = df_exibe.rename(columns={'hora': 'Hora', 'voltagem_fmt': 'Tensão (V)'})
-    df_exibe = df_exibe.head(5)  # Limita a 5 linhas para exibição
-
+    df_exibe = df_exibe.head(5)
     st.dataframe(
-        df_exibe[['Hora', 'Tensão (V)']],  # Mostra só as colunas desejadas
+        df_exibe[['Hora', 'Tensão (V)']],
         height=220,
         column_config={
             "Hora": st.column_config.Column(width="small"),
