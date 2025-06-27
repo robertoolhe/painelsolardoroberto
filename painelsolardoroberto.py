@@ -235,14 +235,14 @@ with col_donut:
         st.info("Não há dados suficientes para exibir o gráfico de rosca.")
 
 with col_df:
-    # Cria um DataFrame só com as colunas desejadas e renomeia para exibição
-    df_exibe = df[['hora', 'voltagem_fmt']].copy()
+    # Cria um DataFrame só para exibição, ordenado do mais recente para o mais antigo
+    df_exibe = df[['hora', 'voltagem_fmt', 'data']].copy()
+    df_exibe = df_exibe.sort_values(by='data', ascending=False)  # <-- só aqui!
     df_exibe = df_exibe.rename(columns={'hora': 'Hora', 'voltagem_fmt': 'Tensão (V)'})
-
     df_exibe = df_exibe.head(5)  # Limita a 5 linhas para exibição
 
     st.dataframe(
-        df_exibe,
+        df_exibe[['Hora', 'Tensão (V)']],  # Mostra só as colunas desejadas
         height=220,
         column_config={
             "Hora": st.column_config.Column(width="small"),
