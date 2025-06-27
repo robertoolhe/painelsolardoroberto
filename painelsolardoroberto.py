@@ -54,7 +54,7 @@ limite_tempo = pd.Timestamp.now() - pd.Timedelta(minutes=480)
 df = df[(df['data'] >= limite_tempo) & (df['nome'] == 'voltagem')]
 
 # Ordena por item ASC e data DESC
-df = df.sort_values(by=['item', 'data'], ascending=[True, False])
+df = df.sort_values(by='data', ascending=False)
 
 # Limita a 1000 linhas
 df = df.head(1000)
@@ -122,6 +122,19 @@ df['voltagem'] = pd.to_numeric(df['voltagem'], errors='coerce')
 df = df.dropna(subset=['voltagem'])
 df['voltagem'] = df['voltagem'].astype(float)
 df['hora'] = df['hora'].dt.strftime('%H:%M')
+
+
+#st.line_chart(df.set_index('to_char').voltagem)
+# Exibe o DataFrame no Streamlit
+#st.write("Dados do Sensor de Voltagem")
+
+# Crie uma coluna formatada só para exibição
+df['voltagem_fmt'] = df['voltagem'].map(lambda x: f"{x:.2f}")
+
+# Ordene para o gráfico
+df = df.sort_values(by='hora', ascending=True)  # 'hora' é o nome da coluna após o rename
+#st.dataframe(df)
+
 # Plota o gráfico de linha com o eixo x formatado
 #st.subheader("Últimas 4 horas - Dados coletados a cada 30 segundos")
 #st.write("Últimas 4 horas - Dados coletados a cada 30 segundos")
@@ -184,13 +197,7 @@ with col_gauge:
     st.plotly_chart(fig_gauge, use_container_width=True)
 
 
-#st.line_chart(df.set_index('to_char').voltagem)
-# Exibe o DataFrame no Streamlit
-#st.write("Dados do Sensor de Voltagem")
 
-df['voltagem'] = df['voltagem'].map(lambda x: f"{x:.2f}")
-df = df.sort_values(by='hora', ascending=False)  # 'hora' é o nome da coluna após o rename
-#st.dataframe(df)
 
 # Cria uma coluna arredondada para a voltagem
 
@@ -206,28 +213,32 @@ col_donut , col_df, col_chart_min = st.columns([1, 0.7, 2])
 
 with col_donut:
     # Gráfico de rosca das voltagens mais frequentes (top 40%)
-    df_donut = contagem_40.reset_index()
+    df_donut = contagem.reset_index()
     df_donut.columns = ['Voltagem', 'Frequência']
     df_donut['Voltagem'] = df_donut['Voltagem'].astype(float).map(lambda x: f"{x:.2f}")
 
     # Mostra só as 5 voltagens mais frequentes
     df_donut = df_donut.head(5)
 
-    fig_donut = px.pie(
-        df_donut,
-        names='Voltagem',
-        values='Frequência',
-        hole=0.5,
-        color_discrete_sequence=['purple', 'violet', 'indigo', 'plum', 'orchid']
-    )
-    fig_donut.update_traces(textinfo='percent+label')
-    fig_donut.update_layout(height=220, margin=dict(t=20, b=20, l=0, r=0))
-    st.plotly_chart(fig_donut, use_container_width=True)
+    if not df_donut.empty:
+        fig_donut = px.pie(
+            df_donut,
+            names='Voltagem',
+            values='Frequência',
+            hole=0.5,
+            color_discrete_sequence=['purple', 'violet', 'indigo', 'plum', 'orchid']
+        )
+        fig_donut.update_traces(textinfo='percent+label')
+        fig_donut.update_layout(height=220, margin=dict(t=20, b=20, l=0, r=0))
+        st.plotly_chart(fig_donut, use_container_width=True)
+    else:
+        st.info("Não há dados suficientes para exibir o gráfico de rosca.")
 
 with col_df:
     # Cria um DataFrame só com as colunas desejadas e renomeia para exibição
-    df_exibe = df[['hora', 'voltagem']].copy()
-    df_exibe = df_exibe.rename(columns={'hora': 'Hora', 'voltagem': 'Tensão (V)'})
+    df_exibe = df[['hora', 'voltagem_fmt']].copy()
+    df_exibe = df_exibe.rename(columns={'hora': 'Hora', 'voltagem_fmt': 'Tensão (V)'})
+
     df_exibe = df_exibe.head(5)  # Limita a 5 linhas para exibição
 
     st.dataframe(
@@ -271,3 +282,5 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+

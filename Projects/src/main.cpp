@@ -6,6 +6,7 @@
 #include <String.h>
 #include "arduino_secrets.h" // Você deve criar este arquivo com suas credenciais
 #include <ESP_Google_Sheet_Client.h>
+#include <time.h>
 
 // Substitua pelos dados do seu arquivo JSON da conta de serviço
 #define CLIENT_EMAIL "esp32painelsolardoroberto@painelsolardoroberto.iam.gserviceaccount.com"
@@ -27,7 +28,7 @@ float voltagem = 0;
 const int numLeituras = 128;
 String faixa = "branca";
 
-float fator = 540.0; // Fator de correção para a leitura do ADC
+float fator = 550.0; // Fator de correção para a leitura do ADC
 
 
 #define BUTTON_1 35 
@@ -64,9 +65,6 @@ void checkAndPrintWiFiStatus() {
   long rssi = WiFi.RSSI();
 }
 
-ESP_Google_Sheet_Client sheet; // objeto principal do client
-ServiceAccount_t sa;           // dados da conta de serviço
-
 void setup() {
   tft.init();
   tft.setRotation(1);
@@ -76,6 +74,8 @@ void setup() {
   tft.println("Iniciando...");
   bipe();
   delay(1000);
+
+  GSheet.begin(CLIENT_EMAIL, PROJECT_ID, PRIVATE_KEY);
 
   pinMode(BUTTON_1, INPUT_PULLUP);
   pinMode(BUTTON_2, INPUT_PULLUP);
@@ -106,15 +106,21 @@ void setup() {
   tft.setCursor(0, 0, 2);
   tft.println("WiFi OK");
 
-  sa.client_email = CLIENT_EMAIL;
-  sa.project_id = PROJECT_ID;
-  sa.private_key = PRIVATE_KEY;
-
-  sheet.begin(&sa);
+  configTime(0, 0, "a.st1.ntp.br");
+  setenv("TZ", "GMT+3", 1); // GMT+3 significa UTC-3 (Brasil)
+  tzset();
 }
 
 void loop() {
   checkAndPrintWiFiStatus();
+
+  // Verifica se a autenticação está pronta
+  if (!GSheet.ready()) {
+    // Não faz nada até estar pronto
+    delay(100);
+    return;
+  }
+
 
   if (digitalRead(BUTTON_1) == LOW) {
     fator = fator-0.50;
@@ -138,20 +144,84 @@ void loop() {
     float voltagem = (volts*4);
     somaLeituras = 0;
 
-    // Monta os dados para enviar para a planilha
-    String range = "dados!A1"; // = 'nomedaaba'!A1
-    String values = "[[\"" + String(voltagem) + "\",\"" + String(mediaLeituras) + "\",\"" + String(volts) + "\"]]";
+    FirebaseJson json;
+    FirebaseJsonArray row;
 
-    if (sheet.append(SHEET_ID, range, values)) {
-      Serial.println("Dados enviados para o Google Sheets!");
+    // Coluna 1: item (deixe vazio para o Google Sheets preencher)
+    row.add(""); 
+
+    // Coluna 2: nome fixo
+    row.add("voltagem");
+
+    // Coluna 3: data/hora (exemplo usando millis, substitua por RTC ou NTP se quiser data real)
+    time_t now = time(nullptr);
+    now -= 3 * 3600; // Ajuste manual para UTC-3 (Brasil)
+    struct tm timeinfo;
+    localtime_r(&now, &timeinfo);
+
+    char dataHora[32];
+    strftime(dataHora, sizeof(dataHora), "%Y-%m-%d %H:%M:%S", &timeinfo);
+    const char* tz = getenv("TZ");
+    if (tz) {
+        Serial.print("Timezone atual (TZ): ");
+        Serial.println(tz);
     } else {
-      Serial.println(sheet.errorReason());
+        Serial.println("Timezone atual (TZ): não definido");
+    }
+
+
+    String dataehora = String(dataHora);
+
+
+
+    row.add(dataehora); // Adiciona a data/hora como texto
+
+    // Coluna 4: voltagem
+    row.add(voltagem);
+
+    FirebaseJsonArray values;
+    values.add(row);
+
+    json.add("values", values);
+
+    FirebaseJson response;
+    const char* range = "dados!A1";
+    const char* valueInputOption = "USER_ENTERED";
+    const char* insertDataOption = "INSERT_ROWS";
+    const char* includeValuesInResponse = "false";
+    const char* responseValueRenderOption = "FORMATTED_VALUE";
+    const char* responseDateTimeRenderOption = "SERIAL_NUMBER";
+
+    bool success = GSheet.values.append(
+      &response, SHEET_ID, range, &json,
+      valueInputOption, insertDataOption,
+      includeValuesInResponse, responseValueRenderOption, responseDateTimeRenderOption
+    );
+
+    if (success) {
+      Serial.println("Dados enviados para o Google Sheets!");
+      response.toString(Serial, true);
+    } else {
+      Serial.println(GSheet.errorReason());
     }
 
     tempoInicial = millis();
-
-  
+    // Exibe os dados no Serial Monitor
+    Serial.println("====================================");
     Serial.println(voltagem);
+    Serial.println("Fator: " + String(fator));
+    Serial.println("Leitura: " + String(leitura));
+    Serial.println("Volts: " + String(volts));
+    Serial.println("Voltagem: " + String(voltagem));
+    Serial.println("Faixa: " + faixa);
+    Serial.print("Variável dataHora:  ");
+    Serial.println(dataHora);
+    Serial.print("Data/hora capturada: ");
+    Serial.println(dataehora);
+    Serial.print("Timezone atual (TZ): ");
+    Serial.println(tz ? tz : "não definido");
+    Serial.println("====================================");
+
 
     // Mostra na tela TFT
     tft.fillScreen(TFT_BLACK);
@@ -212,9 +282,15 @@ void loop() {
     tft.print("=");
     tft.print(volts);
     tft.print("x4=");
-    tft.print(volts*4);
+    tft.println(volts*4);
+    tft.setTextColor(TFT_GREY, TFT_WHITE);
+    tft.setTextFont(2);
+    tft.print("em: ");
+    tft.println(dataHora);
 
   }
 
   delay(20);
+
+
 }
