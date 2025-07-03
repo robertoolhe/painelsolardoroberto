@@ -10,15 +10,16 @@ Mas tive que aprender muita coisa, por exemplo, usar:
 03) VS Code c/sweet drácula, git e bash
 04) Python 3.13 
 05) Bibliotecas SQLAlchemy, psycopg2, plotly.express e go, pandas e streamlit
-06) Streamlit
-07) MarkDown (para os títulos)
-08) GitHub para repositório público
-09) Git para versionamento
-10) GithubCLI para usar branchs
-11) Git Bash e Venv para Deploy no SL
-12) Deploy no Streamlit
-13) Secrets no Arduino WiFi e na API GSheets e no Streamlit
-14) Transformar um Notebook velho em um Painel LCD invertido para exibição do Painel Solar em tempo real 24h (alimentado pelas baterias LifePo4, ou seja, sem gastar energia, assim como vários outros equipamentos em casa: lâmpadas, ventiladores, notebooks, luz noturna, etc, em breve Cooktop por Indução para economizar Gás de Cozinha com o adicionamento de um Banco de Supercapacitores ao Sistema)
+06) Gerar o requirements.txt para o Streamlit
+07) Streamlit
+08) MarkDown (para os títulos)
+09) GitHub para repositório público
+10) Git para versionamento
+11) GithubCLI para usar branchs
+12) Git Bash e Venv para Deploy no SL
+13) Deploy no Streamlit
+14) Secrets no Arduino WiFi e na API GSheets e no Streamlit
+15) Transformar um Notebook velho em um Painel LCD invertido para exibição do Painel Solar em tempo real 24h (alimentado pelas baterias LifePo4, ou seja, sem gastar energia, assim como vários outros equipamentos em casa: lâmpadas, ventiladores, notebooks, luz noturna, etc, em breve Cooktop por Indução para economizar Gás de Cozinha com o adicionamento de um Banco de Supercapacitores ao Sistema)
 
 PS: E ainda descobri uma restrição no Streamlit que só fez o Deploy quando subi psycopg2-binary no lugar de psycopg2, leia o meu requirements.txt para conferir.
 
@@ -42,3 +43,8 @@ FOTOS:
 ![Print do painel solar](05-sensor_em_ação_na_esp32_tt-go_t-display_via_GPIO34_vBat.png)
 
 ![Print do painel solar](06-painel_em_ação_remotamente_via_streamlit_community_cloud.png)
+
+![Print do painel solar](07-sensor_em_ação_na_arduino_wemos_d1_r1_com_tft_e_sensor_de_tensão_leitura_e_gravação_online_automatica_a_cada_1_min.png)
+
+Contato Roberto La Bella no Insta https://www.instagram.com/tunegestao/#
+
