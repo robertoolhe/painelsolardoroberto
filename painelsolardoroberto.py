@@ -1,4 +1,4 @@
-# painelsolar.py® Criado por Roberto Olhê github.com/robertoolhe - Dashbord Painel Solar - Todos Direitos Reservados 2025®    
+# painelsolar.py® Criado por Roberto Olhê github.com/robertoolhe (Roberto La Bella) - Dashbord Painel Solar - Todos Direitos Reservados 2025®    
 # painelsolar.py® Desenvolvido em jun/25 com Python+Pandas+StreamLit+Plotly
 # substitui SQLalchemy por requests
 # painelsolar.py® Utilizando VS Code com Sweet Dracula
