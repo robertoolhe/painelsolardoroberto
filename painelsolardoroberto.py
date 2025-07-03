@@ -4,9 +4,6 @@
 # painelsolar.py® Utilizando VS Code com Sweet Dracula
 # painelsolar.py® Utilizando Banco de Dados em Nuvem: PostgreSQL no Neon.tech
 # substituí PostgreSQL Neon Tech pago por Banco de Dados SQLite no Google Drive
-# link share: https://drive.google.com/file/d/1QnRvLKTc1sZyqxVODPehOF55sYPyhZHz/view?usp=drive_link
-# ID: 1QnRvLKTc1sZyqxVODPehOF55sYPyhZHz
-
 
 # painelsolar.py® Compartilhado no GitHub/robertoolhe (Roberto La Bella) e Streamlit Community Cloud
 # painelsolar.py® Controle de Versões com GIT e testes com Git Bash
