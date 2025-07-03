@@ -18,9 +18,9 @@
 
 // Definições e variáveis
 unsigned long tempoInicial;
-const int tempoEspera = 0.5 * 60 * 1000;
+const int tempoEspera = 1 * 60 * 1000;
 
-int analogPin = 34;
+int analogPin = 32;
 int leitura = 0;
 int somaLeituras = 0;
 float voltagem = 0;
@@ -28,8 +28,7 @@ float voltagem = 0;
 const int numLeituras = 128;
 String faixa = "branca";
 
-float fator = 550.0; // Fator de correção para a leitura do ADC
-
+float fator = 530.0; // Fator de correção para a leitura do ADC
 
 #define BUTTON_1 35 
 #define BUTTON_2 0  
@@ -71,22 +70,19 @@ void tokenStatusCallback(TokenInfo info) {
   Serial.println(msg);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
   tft.setTextFont(2);
-  //tft.setCursor(0, 60, 2); // Ajuste a posição conforme necessário
+  tft.setCursor(0, 60, 2); // Ajuste a posição conforme necessário
   tft.println(msg);
 
   if (info.status == token_status_error) {
     String err = "Token error: " + String(GSheet.getTokenError(info).c_str());
     Serial.println(err);
     tft.setTextColor(TFT_RED, TFT_BLACK);
-    //tft.setCursor(0, 80, 2); // Linha abaixo do status
+    tft.setCursor(0, 80, 2); // Linha abaixo do status
     tft.println(err);
   }
-    #include "../meus_secrets/arduino_secrets.h"// Pausa de 15 segundos após exibir as mensagens
+  // Pausa de 15 segundos após exibir as mensagens
   delay(15000);
 }
-
-
-
 
 void setup() {
   tft.init();
@@ -129,11 +125,48 @@ void setup() {
   tft.fillScreen(TFT_GREEN);
   tft.setCursor(0, 0, 2);
   tft.println("WiFi OK");
+  bipe();
+  delay(3000);
+  tft.fillScreen(TFT_BLACK);
 
   configTime(0, 0, "a.st1.ntp.br");
   setenv("TZ", "GMT+3", 1); // GMT+3 significa UTC-3 (Brasil)
   tzset();
-  GSheet.setSystemTime(time(nullptr));
+  // Aguarda sincronização do NTP
+  time_t now = time(nullptr);
+  while (now < 100000) {
+    tft.print("ntp.");
+    delay(100);
+    now = time(nullptr);
+  }
+  delay(1000);
+  GSheet.setSystemTime(now);
+
+  // Agora sim, preencha timeinfo e use strftime
+  //now -= 3 * 3600; // Ajuste manual para UTC-3 (Brasil)
+  struct tm timeinfo;
+  localtime_r(&now, &timeinfo);
+  char dia[32];
+  tft.fillScreen(TFT_BLACK);
+  tft.setCursor(0, 0, 2);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextFont(2);
+  tft.print("TZ: ");
+  const char* tz = getenv("TZ");
+  if (tz) {
+    Serial.print("Timezone atual (TZ): ");
+    Serial.println(tz);
+  } else {
+    Serial.println("Timezone atual (TZ): nao definido");
+  } 
+  tft.setTextColor(TFT_BLUE, TFT_WHITE);  
+  tft.println(tz ? tz : "nao definido");
+  strftime(dia, sizeof(dia), "%Y-%m-%d %H:%M:%S", &timeinfo);
+  tft.print("dia: ");
+  tft.println(dia);
+  delay(6000); // Mostra por 6 segundos (ajuste se quiser)
+  tft.fillScreen(TFT_BLACK);
+
 }
 
 void loop() {
@@ -146,17 +179,15 @@ void loop() {
     return;
   }
 
-
   if (digitalRead(BUTTON_1) == LOW) {
-    fator = fator-0.50;
-    delay(100);
+    fator = fator-0.66;
+    delay(20);
   }
   if (digitalRead(BUTTON_2) == LOW) {
-    fator = fator+1.50;
-    delay(100);
+    fator = fator+0.33;
+    delay(20);
   }
   delay(20); 
-
 
   if (millis() - tempoInicial >= tempoEspera) {
     for (int i = 0; i < numLeituras; i++) {
@@ -180,10 +211,9 @@ void loop() {
 
     // Coluna 3: data/hora (exemplo usando millis, substitua por RTC ou NTP se quiser data real)
     time_t now = time(nullptr);
-    now -= 3 * 3600; // Ajuste manual para UTC-3 (Brasil)
+    //now -= 3 * 3600; // Ajuste manual para UTC-3 (Brasil)
     struct tm timeinfo;
     localtime_r(&now, &timeinfo);
-
     char dataHora[32];
     strftime(dataHora, sizeof(dataHora), "%Y-%m-%d %H:%M:%S", &timeinfo);
     const char* tz = getenv("TZ");
@@ -194,11 +224,7 @@ void loop() {
         Serial.println("Timezone atual (TZ): não definido");
     }
 
-
     String dataehora = String(dataHora);
-
-
-
     row.add(dataehora); // Adiciona a data/hora como texto
 
     // Coluna 4: voltagem

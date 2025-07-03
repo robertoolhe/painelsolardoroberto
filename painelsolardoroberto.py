@@ -8,7 +8,7 @@
 # ID: 1QnRvLKTc1sZyqxVODPehOF55sYPyhZHz
 
 
-# painelsolar.py® Compartilhado no GitHub/robertoolhe e Streamlit Community Cloud
+# painelsolar.py® Compartilhado no GitHub/robertoolhe (Roberto La Bella) e Streamlit Community Cloud
 # painelsolar.py® Controle de Versões com GIT e testes com Git Bash
 # painelsolar.py® Leituras do Sensor de Voltagem Desenvolvida no Esp32 TT-GO T-Display em MicroPython + NeonPostgresOverHTTPProxyClient
 # docker instalado com wsl --install -d Ubuntu
@@ -53,16 +53,16 @@ df['voltagem'] = pd.to_numeric(df['voltagem'], errors='coerce')
 df = df.dropna(subset=['data', 'voltagem'])
 df['voltagem'] = df['voltagem'].astype(float)
 
-# Filtra últimas 8 horas (480 minutos)
-limite_tempo = pd.Timestamp.now() - pd.Timedelta(minutes=480)
-# Filtra últimas 8 horas (480 minutos) e apenas 'nome' == 'voltagem'
+# Filtra últimas 4 horas (LÊ ULTIMOS 240 minutos)
+limite_tempo = pd.Timestamp.now() - pd.Timedelta(minutes=240)
+# Filtra últimas horas e apenas 'nome' == 'voltagem'
 df = df[(df['data'] >= limite_tempo) & (df['nome'] == 'voltagem')]
 
 # Ordena por item ASC e data DESC
 df = df.sort_values(by='data', ascending=False)
 
 # Limita a 1000 linhas
-df = df.head(1000)
+df = df.head(1200)
 
 # Cria coluna 'hora' igual ao SQL
 df['hora'] = df['data'].dt.strftime('%H:%M')
@@ -101,7 +101,7 @@ st.markdown(
     }
     </style>
     <h1>
-        <span class="by-dash">DashBoard</span> Painel Solar <span class="by-autor">by Roberto Olhê</span>
+        <span class="by-dash">DashBoard</span> Painel Solar <span class="by-autor">by Roberto La Bella</span>
     </h1>
     """,
     unsafe_allow_html=True
@@ -153,7 +153,7 @@ with col_chart:
         df_chart, 
         x='hora', 
         y='voltagem',
-        labels={'hora': 'Últimas 8 Horas', 'voltagem': 'Tensão (V)'},
+        labels={'hora': 'Últimas 4 Horas', 'voltagem': 'Tensão (V)'},
         height=380,  # Defina a altura desejada em pixels
         color_discrete_sequence=['violet']
     )
@@ -188,12 +188,12 @@ with col_gauge:
         },
         #title={'text': "Voltagem Atual (V)"},
         gauge={
-            'axis': {'range': [12.3, 14.5]},
+            'axis': {'range': [12.0, 14.4]},
             'bar': {'color': "lightgray"},
             'steps': [
-                {'range': [12.6, 13.0], 'color': "indigo"}, 
-                {'range': [13.0, 14.0], 'color': "purple"},
-                {'range': [14.0, 14.5], 'color': "violet"}
+                {'range': [12.0, 12.8], 'color': "indigo"}, 
+                {'range': [12.8, 13.8], 'color': "purple"},
+                {'range': [13.8, 14.4], 'color': "violet"}
             ],
         }
     ))
@@ -265,7 +265,7 @@ with col_chart_min:
         height=220
     )
     fig_area.update_yaxes(
-    range=[12.3, 14.2],   # Defina o mínimo e máximo desejado
+    range=[12.8, 14.0],   # Defina o mínimo e máximo desejado
     dtick=0.1,
     tickformat=".2f"
     )
@@ -274,6 +274,8 @@ with col_chart_min:
 
 # Atualiza a cada 30 segundos
 #st.write("A página será atualizada automaticamente a cada 30 segundos.")
+#st.rerun()
+
 st.markdown(
     """
     <meta http-equiv="refresh" content="60">
