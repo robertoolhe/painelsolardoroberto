@@ -1,17 +1,17 @@
-# painelsolar.py® Criado por Roberto Olhê github.com/robertoolhe (Roberto La Bella) - Dashbord Painel Solar - Todos Direitos Reservados 2025®    
-# painelsolar.py® Desenvolvido em jun/25 com Python+Pandas+StreamLit+Plotly
+# painelsolardoroberto.py® Criado por Roberto La Bella github.com/robertoolhe - Dashbord Painel Solar - Todos Direitos Reservados 2025®    
+# painelsolardoroberto.py® Desenvolvido em jun/25 com Python+Pandas+StreamLit+Plotly+Pandas+API GSheets
 # substitui SQLalchemy por requests
-# painelsolar.py® Utilizando VS Code com Sweet Dracula
-# painelsolar.py® Utilizando Banco de Dados em Nuvem: PostgreSQL no Neon.tech
-# substituí PostgreSQL Neon Tech pago por Banco de Dados SQLite no Google Drive
-
-# painelsolar.py® Compartilhado no GitHub/robertoolhe (Roberto La Bella) e Streamlit Community Cloud
-# painelsolar.py® Controle de Versões com GIT e testes com Git Bash
-# painelsolar.py® Leituras do Sensor de Voltagem Desenvolvida no Esp32 TT-GO T-Display em MicroPython + NeonPostgresOverHTTPProxyClient
-# docker instalado com wsl --install -d Ubuntu
+# painelsolardoroberto.py® Utilizando VS Code com Extensões: Sweet Dracula, Python 3.13, em Windos com GIT e Git Bash Ubuntu
+# painelsolardoroberto.py® Utilizando Banco de Dados em Nuvem: PostgreSQL no Neon Tech Cloud**
+# **substituí PostgreSQL Neon Tech que seria 'pago' após 190h por Banco de Dados SQLite no Google Drive com API GSheets
+# painelsolardoroberto.py® Compartilhado no GitHub/robertoolhe e Streamlit Community Cloud ( https://bit.ly/painelsolardoroberto )
+# painelsolardoroberto.py® Controle de Versões com GIT e compilação e execução com Git Bash ( streamlit run painelsolardoroberto.py )
+# painelsolardoroberto.py® Leituras do Sensor de Voltagem Desenvolvida no Esp32 TT-GO T-Display em MicroPython + NeonPostgresOverHTTPProxyClient
+# Substituí NeonPostgreSQL por GSheets, ou seja NeonPostgresOverHTTPProxyClient por API GSheets Client e chve no Google Cloud , + json (secrets)
+# Testes com docker instalado com wsl --install -d Ubuntu, mas preferi usar sem docker inicialmente
 # export HOME="/c/Users/tuneg" se o GIT não encontrar HOME
-# executar com streamlit run painelsolar.py --server.port 8501 --server.address
-
+# executar no vs code com: "streamlit run painelsolar.py --server.port 8501 --server.address" no bash ou terminal (obs.: use fundo dark no seu navegador para um melhor resultado dos refreshs)
+# painelsolardoroberto.py® Utilizando Streamlit Community Cloud (https://bit.ly/painelsolardoroberto) para publicação
 
 import streamlit as st
 import pandas as pd
