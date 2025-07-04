@@ -50,8 +50,8 @@ df['voltagem'] = pd.to_numeric(df['voltagem'], errors='coerce')
 df = df.dropna(subset=['data', 'voltagem'])
 df['voltagem'] = df['voltagem'].astype(float)
 
-# Filtra últimas 4 horas (LÊ ULTIMOS 240 minutos)
-limite_tempo = pd.Timestamp.now() - pd.Timedelta(minutes=240)
+# Filtra últimas 4 horas (LÊ ULTIMOS 450 minutos)
+limite_tempo = pd.Timestamp.now() - pd.Timedelta(minutes=450)
 # Filtra últimas horas e apenas 'nome' == 'voltagem'
 df = df[(df['data'] >= limite_tempo) & (df['nome'] == 'voltagem')]
 
@@ -59,7 +59,7 @@ df = df[(df['data'] >= limite_tempo) & (df['nome'] == 'voltagem')]
 df = df.sort_values(by='data', ascending=False)
 
 # Limita a 1000 linhas
-df = df.head(1200)
+df = df.head(450)
 
 # Cria coluna 'hora' igual ao SQL
 df['hora'] = df['data'].dt.strftime('%H:%M')
